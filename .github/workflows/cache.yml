@@ -18,7 +18,7 @@ jobs:
         submodules: recursive
 
     - name: generate data
-        run: |
+      run: |
         mkdir build
         cp vcpkg.json build/vcpkg.json
 
