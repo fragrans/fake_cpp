@@ -1,0 +1,8 @@
+{
+    "dependencies": [
+        "openssl",
+        "sol2",
+        "sqlite3",
+        "yaml-cpp"
+    ]
+}
