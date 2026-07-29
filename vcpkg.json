@@ -1,4 +1,6 @@
 {
+    "name": "awesome",
+    "version-string": "latest",
     "dependencies": [
         "sqlite3",
         "yaml-cpp"
