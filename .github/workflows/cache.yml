@@ -1,0 +1,33 @@
+name: Manual workflow
+
+on:
+  # workflow_dispatch:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: generate data
+        run: |
+        mkdir build
+        cp vcpkg.json build/vcpkg.json
+
+    - name: ls build
+      run: dir build
+
+    - name: Tag Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: build/vcpkg.json
+
