@@ -11,5 +11,11 @@
 				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
 			}
 		}
+	],
+	"buildPresets": [
+		{
+			"name": "ninja-multi-vcpkg",
+			"configurePreset": "ninja-multi-vcpkg"
+		}
 	]
 }
