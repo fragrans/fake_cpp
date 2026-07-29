@@ -20,6 +20,13 @@ target_link_libraries(hello
 install(TARGETS hello
     RUNTIME_DEPENDENCIES
     DESTINATION bin
+    PRE_EXCLUDE_REGEXES
+            "api-ms-.*"
+            "ext-ms-.*"
+
+    POST_EXCLUDE_REGEXES
+        ".*/Windows/System32/.*"
+        ".*/Windows/SysWOW64/.*"
 )
 
 set(CPACK_PACKAGE_NAME "fake-app")
