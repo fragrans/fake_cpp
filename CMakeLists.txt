@@ -17,16 +17,30 @@ target_link_libraries(hello
 )
 
 # Install rule
+# install(TARGETS hello
+#     RUNTIME_DEPENDENCIES
+#     DESTINATION bin
+#     PRE_EXCLUDE_REGEXES
+#             "api-ms-.*"
+#             "ext-ms-.*"
+
+#     POST_EXCLUDE_REGEXES
+#         ".*/Windows/System32/.*"
+#         ".*/Windows/SysWOW64/.*"
+# )
+
 install(TARGETS hello
-    RUNTIME_DEPENDENCIES
+    RUNTIME_DEPENDENCY_SET runtime_deps
+    RUNTIME DESTINATION bin
+)
+
+install(RUNTIME_DEPENDENCY_SET runtime_deps
     DESTINATION bin
     PRE_EXCLUDE_REGEXES
-            "api-ms-.*"
-            "ext-ms-.*"
-
+        "api-ms-.*"
+        "ext-ms-.*"
     POST_EXCLUDE_REGEXES
-        ".*/Windows/System32/.*"
-        ".*/Windows/SysWOW64/.*"
+        ".*[Ww]indows[/\\\\]System32/.*"
 )
 
 set(CPACK_PACKAGE_NAME "fake-app")
