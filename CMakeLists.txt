@@ -18,7 +18,8 @@ target_link_libraries(hello
 
 # Install rule
 install(TARGETS hello
-    RUNTIME DESTINATION bin
+    RUNTIME_DEPENDENCIES
+    DESTINATION bin
 )
 
 set(CPACK_PACKAGE_NAME "fake-app")
