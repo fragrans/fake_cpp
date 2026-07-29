@@ -31,7 +31,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: build/sbany-*-win64.msi
+        files: build/*-win64.msi
 
     - name: Release
       uses: softprops/action-gh-release@v2
