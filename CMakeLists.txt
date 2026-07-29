@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 4.4)
 
 project(fake VERSION 1.0.0 LANGUAGES C)
 
@@ -16,31 +16,8 @@ target_link_libraries(hello
         unofficial::sqlite3::sqlite3
 )
 
-# Install rule
-# install(TARGETS hello
-#     RUNTIME_DEPENDENCIES
-#     DESTINATION bin
-#     PRE_EXCLUDE_REGEXES
-#             "api-ms-.*"
-#             "ext-ms-.*"
-
-#     POST_EXCLUDE_REGEXES
-#         ".*/Windows/System32/.*"
-#         ".*/Windows/SysWOW64/.*"
-# )
-
 install(TARGETS hello
-    RUNTIME_DEPENDENCY_SET runtime_deps
     RUNTIME DESTINATION bin
-)
-
-install(RUNTIME_DEPENDENCY_SET runtime_deps
-    DESTINATION bin
-    PRE_EXCLUDE_REGEXES
-        "api-ms-.*"
-        "ext-ms-.*"
-    POST_EXCLUDE_REGEXES
-        ".*[Ww]indows[/\\\\]System32/.*"
 )
 
 set(CPACK_PACKAGE_NAME "fake-app")
