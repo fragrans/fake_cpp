@@ -24,8 +24,15 @@ jobs:
         buildPreset: ninja-multi-vcpkg
         packagePreset: ninja-multi-vcpkg
 
+    
     - name: Release
       uses: softprops/action-gh-release@v2
       if: true
       with:
+        tag_name: "latest"          # Sets a fixed tag name
+        name: "Latest Development Build"
         files: build/*-win64.msi
+        overwrite_files: true
+        prerelease: true            # Optional: Mark as pre-release
+      # env:
+      #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
