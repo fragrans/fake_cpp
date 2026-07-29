@@ -1,7 +1,10 @@
 name: Manual workflow
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
+  push:
+    tags:
+      - "*.*.*"
 
 jobs:
   build:
@@ -24,10 +27,15 @@ jobs:
         buildPreset: ninja-multi-vcpkg
         packagePreset: ninja-multi-vcpkg
 
-    
+    - name: Tag Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: build/sbany-*-win64.msi
+
     - name: Release
       uses: softprops/action-gh-release@v2
-      if: true
+      if: false
       with:
         tag_name: "latest"          # Sets a fixed tag name
         name: "Latest Development Build"
