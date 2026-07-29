@@ -6,9 +6,13 @@ on:
     tags:
       - "*.*.*"
 
+
+
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      packages: write
 
     steps:
     - uses: actions/checkout@v4
