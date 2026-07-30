@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    env: |
+    env:
       VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
 
     runs-on: windows-latest
