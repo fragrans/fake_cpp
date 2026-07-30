@@ -10,6 +10,9 @@ on:
 
 jobs:
   build:
+    env: |
+      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+
     runs-on: windows-latest
     permissions:
       contents: write
@@ -20,15 +23,16 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Setup vcpkg
-      uses: lukka/run-vcpkg@v11
-
-    - name: Configure & build
-      uses: lukka/run-cmake@v10
-      with:
-        configurePreset: ninja-multi-vcpkg
-        buildPreset: ninja-multi-vcpkg
-        packagePreset: ninja-multi-vcpkg
+    - name: build
+      run: |
+        vcpkg\bootstrap-vcpkg.bat
+        vcpkg\vcpkg.exe install --triplet x64-windows
+        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg\scripts\buildsystems\vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
+        cmake --build build --config Release
+        cmake --build build --target package
+        ls vcpkg
+        ls ~\AppData\Local\vcpkg\archives
+        ls build/vcpkg_installed
 
     - name: Tag Release
       uses: softprops/action-gh-release@v2

@@ -20,8 +20,8 @@ jobs:
       with:
         submodules: recursive
 
-    - name: cache vcpkg
-      id: vcpkg
+    - name: cache only
+      id: raw-cache
       uses: actions/cache@v4
       with:
         path: |
