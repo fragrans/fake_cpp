@@ -3,6 +3,8 @@ name: Cache workflow
 on:
   # workflow_dispatch:
   push:
+    branches:
+      - main  # <--- Added: Saves and binds cache to the main branch scope
     tags:
       - "*.*.*"
 
@@ -42,7 +44,7 @@ jobs:
 
     - name: Tag Release
       uses: softprops/action-gh-release@v2
+      # This step will only execute when triggered by a tag, ignoring standard pushes to main
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: build/vcpkg.json
-
+        files: build/*-win64.*
