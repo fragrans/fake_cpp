@@ -25,9 +25,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: |
-          vcpkg/packages
-          vcpkg/downloads
-          vcpkg/buildtrees
+          ~\AppData\Local\vcpkg\archives
           build/vcpkg_installed
         key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
         restore-keys: |
@@ -36,13 +34,14 @@ jobs:
 
     - name: build
       run: |
-        ls vcpkg
         vcpkg\bootstrap-vcpkg.bat
         vcpkg\vcpkg.exe install --triplet x64-windows
         cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg\scripts\buildsystems\vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
         cmake --build build --config Release
         cmake --build build --target package
-        ls build
+        ls vcpkg
+        ls ~\AppData\Local\vcpkg\archives
+        ls build/vcpkg_installed
 
     - name: Tag Release
       uses: softprops/action-gh-release@v2
