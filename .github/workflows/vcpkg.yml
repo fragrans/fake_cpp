@@ -3,14 +3,17 @@ name: Vcpkg workflow
 on:
   # workflow_dispatch:
   push:
+    branches:
+      - main  # <--- Added: Saves and binds cache to the main branch scope
     tags:
       - "*.*.*"
 
 jobs:
   build:
     runs-on: windows-latest
-    #permissions:
-    #  packages: write
+    permissions:
+      contents: write
+      packages: write
 
     steps:
     - uses: actions/checkout@v4
@@ -37,9 +40,9 @@ jobs:
       with:
         files: build/*-win64.msi
 
-    - name: Release
+    - name: Latest Release
       uses: softprops/action-gh-release@v2
-      if: false
+      if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
       with:
         tag_name: "latest"          # Sets a fixed tag name
         name: "Latest Development Build"
