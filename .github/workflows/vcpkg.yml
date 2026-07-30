@@ -11,7 +11,8 @@ on:
 jobs:
   build:
     env:
-      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      VCPKG_DEFAULT_TRIPLETL: x64-windows-release
+      VCPKG_BINARY_SOURCES: "clear;nuget,GitHub,readwrite"
 
     runs-on: windows-latest
     permissions:
@@ -23,15 +24,33 @@ jobs:
       with:
         submodules: recursive
 
-    - name: build
+    - name: bootstrap-vcpkg
       run: |
         vcpkg\bootstrap-vcpkg.bat
+
+    # This step assumes `vcpkg` has been bootstrapped (run `./vcpkg/bootstrap-vcpkg`)
+    - name: 'Setup NuGet Credentials'
+      shell: 'bash'
+      # Replace <OWNER> with your organization name
+      run: |
+        ${{ matrix.mono }} `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+          sources add \
+          -source "https://nuget.pkg.github.com/fragrans/index.json" \
+          -storepasswordincleartext \
+          -name "GitHub" \
+          -username "fragrans" \
+          -password "${{ secrets.GITHUB_TOKEN }}"
+        ${{ matrix.mono }} `./vcpkg/vcpkg fetch nuget | tail -n 1` \
+          setapikey "${{ secrets.GITHUB_TOKEN }}" \
+         -source "https://nuget.pkg.github.com/fragrans/index.json"
+
+    - name: build
+      run: |
         vcpkg\vcpkg.exe install --triplet x64-windows
         cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg\scripts\buildsystems\vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
         cmake --build build --config Release
         cmake --build build --target package
         ls vcpkg
-        ls ~\AppData\Local\vcpkg\archives
         ls build/vcpkg_installed
 
     - name: Tag Release
