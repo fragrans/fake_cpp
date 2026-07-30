@@ -18,13 +18,27 @@ jobs:
       with:
         submodules: recursive
 
-    - name: generate data
-      run: |
-        mkdir build
-        cp vcpkg.json build/vcpkg.json
+    - name: cache vcpkg
+      id: vcpkg
+      uses: actions/cache@v4
+      with:
+        path: |
+          vcpkg\installed
+          vcpkg\packages
+          vcpkg\downloads
+          vcpkg\buildtrees
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-
+          ${{ runner.os }}-
 
-    - name: ls build
-      run: dir build
+    - name: build
+        run: |
+          vcpkg\bootstrap-vcpkg.bat
+          vcpkg install --triplet x64-windows
+          cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+          cmake --build build --config Release
+          cmake --build build --target package
 
     - name: Tag Release
       uses: softprops/action-gh-release@v2
