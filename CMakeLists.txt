@@ -23,6 +23,6 @@ install(TARGETS hello
 set(CPACK_PACKAGE_NAME "fake-app")
 set(CPACK_PACKAGE_VENDOR "awesome")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "A simple sqlite and yaml app")
-set(CPACK_GENERATOR "NSIS64") # Formats you want to build by default
+set(CPACK_GENERATOR "ZIP") # Formats you want to build by default
 
 include(CPack)
