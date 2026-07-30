@@ -36,7 +36,7 @@ jobs:
       run: |
         vcpkg\bootstrap-vcpkg.bat
         vcpkg install --triplet x64-windows
-        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
+        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg\scripts\buildsystems\vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows
         cmake --build build --config Release
         cmake --build build --target package
 
